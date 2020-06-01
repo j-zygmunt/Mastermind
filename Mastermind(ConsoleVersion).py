@@ -53,6 +53,9 @@ class BasePlayer:
             else:
                 print("nie tym razem, pzdr poćwicz")
 
+    def get_random_code(self):
+        return [random.randint(1, self.__number_of_pins) for _ in range(self.__code_length)]
+
     def get_code_length(self):
         return self.__code_length
 
@@ -74,23 +77,20 @@ class HumanPlayer(BasePlayer):
         super().__init__()
         self.__code = None
 
-    def set_random_code(self):
-        self.__code = [random.randint(1, self.get_number_of_pins()) for _ in range(self.get_code_length())]
-
     def get_guess(self):
         while True:
             try:
                 user_input = input("Twoja próba: ")
                 return self.appropriate_code(user_input)
             except Exception as error:
-                raise error
+                print("Kod w nieprawidłowej formie: ", error)
 
     @staticmethod
     def get_answer(black_dot, white_dot):
         print("black {} white {}".format(black_dot, white_dot))
 
     def play_mastermind(self):
-        self.set_random_code()
+        self.__code = self.get_random_code()
         while self.get_count_guesses() < self.get_max_guesses():
             self.increment_count_guesses()
             guess = self.get_guess()
@@ -114,17 +114,14 @@ class ComputerPlayer(BasePlayer):
         self.__response = None
         self.__current_guess = self.__initial_guess
 
-    def set_random_code(self):
-        self.__code = [random.randint(1, self.get_number_of_pins()) for _ in range(self.get_code_length())]
-
-    def set_code(self):
+    def get_code(self):
         while True:
             if self.__code is None:
                 try:
                     user_input = input("Podaj kod: ")
                     self.__code = self.appropriate_code(user_input)
                 except Exception as error:
-                    raise error
+                    print("Błędny kod: ", error)
             else:
                 break
 
@@ -154,9 +151,9 @@ class ComputerPlayer(BasePlayer):
 
     def play_mastermind(self, who):
         if who:
-            self.set_code()
+            self.get_code()
         else:
-            self.set_random_code()
+            self.__code = self.get_random_code()
             print("wyosowany kod", self.__code)
         while self.get_count_guesses() < self.get_max_guesses():
             self.increment_count_guesses()
@@ -186,7 +183,7 @@ def chose_game_mode():
                                    "Tryb: ")
                 game_m = appropriate_mode(user_input)
             except Exception as error:
-                raise error
+                print("Nie ma takiego trybu: ", error)
         else:
             break
     return game_m
@@ -207,3 +204,31 @@ def play_again():
     if user_answer.lower() != 'stop':
         return True
     return False
+
+
+if __name__ == "__main__":
+    game_mode = chose_game_mode()
+    if game_mode == 1:
+        game = ComputerPlayer()
+        game.play_mastermind(False)
+    if game_mode == 2:
+        game = ComputerPlayer()
+        game.play_mastermind(True)
+    if game_mode == 3:
+        print("to implement")
+    if game_mode == 4:
+        game = HumanPlayer()
+        game.play_mastermind()
+    while play_again():
+        game_mode = chose_game_mode()
+        if game_mode == 1:
+            game = ComputerPlayer()
+            game.play_mastermind(False)
+        if game_mode == 2:
+            game = ComputerPlayer()
+            game.play_mastermind(True)
+        if game_mode == 3:
+            print("to implement")
+        if game_mode == 4:
+            game = HumanPlayer()
+            game.play_mastermind()
