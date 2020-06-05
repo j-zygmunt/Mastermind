@@ -89,6 +89,9 @@ class HumanPlayer(BasePlayer):
     def get_answer(black_dot, white_dot):
         print("black {} white {}".format(black_dot, white_dot))
 
+    def get_code(self):
+        return self.__code
+
     def play_mastermind(self):
         self.set_random_code()
         while self.get_count_guesses() < self.get_max_guesses():
