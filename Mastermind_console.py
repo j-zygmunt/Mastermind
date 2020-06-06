@@ -130,6 +130,7 @@ class ComputerPlayer(BasePlayer):
                                                     if self.check(list(self.__current_guess),
                                                                   list(p)) != self.__response))
 
+
     def remove_guess(self):
         self.__unseen_codes.difference_update(self.__current_guess)
         self.__possible_codes.difference_update(self.__current_guess)
