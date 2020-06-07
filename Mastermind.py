@@ -1,5 +1,5 @@
 """
-This module contains mastermind game logic.
+This module contains the mastermind game logic.
 It allows you or computer to play the game.
 
 CLasses:
@@ -8,9 +8,9 @@ InappropriateCodeException(Exception)
 BasePlayer
     Represents the base player of the mastermind game.
 HumanPlayer(BasePlayer)
-    Class that allows you to play.
+    Class that contains human game logic.
 ComputerPlayer(BasePlayer)
-    Class that allows computer to play.
+    Class that contains computer game logic based on Five guess algorithm.
 """
 
 import copy
@@ -21,6 +21,7 @@ from itertools import product
 NUMBER_OF_PINS = 6
 CODE_LENGTH = 4
 MAX_GUESSES = 12
+ANSWER_LENGTH = 2
 
 
 class InappropriateCodeException(Exception):
@@ -50,24 +51,24 @@ class BasePlayer:
 
     Methods:
     appropriate_code(code)
-        Checks if the given code or guess is valid.
+        Check if the given code or guess is valid.
     check(guess,code)
-        Checks if the given guess fits the code.
+        Check if the given guess fits the code.
     get_code_length()
-        Returns the code length.
+        Return the code length.
     get_number_of_pins()
-        Returns the number of possible digits.
+        Return the number of possible digits.
     get_max_guesses()
-        Returns the maximum number of guesses.
+        Return the maximum number of guesses.
     get_count_guesses()
-        Returns the number of the current guess.
+        Return the number of the current guess.
     increment_count_guesses()
         Increment the value of tried codes.
     """
 
     def __init__(self):
         """
-        Constructs all the necessary attributes for the BasePlayer object.
+        Construct all the necessary attributes for the BasePlayer object.
         """
 
         self.__number_of_pins = NUMBER_OF_PINS
@@ -77,7 +78,8 @@ class BasePlayer:
 
     def appropriate_code(self, code):
         """
-        Checks if the given code or guess is valid.
+        Check if the given code or guess is valid.
+
         :param code: the code to be checked
         :return code: the checked code
         :raises InappropriateCodeException: if code is invalid
@@ -96,7 +98,8 @@ class BasePlayer:
 
     def check(self, guess, code):
         """
-        Checks if the given guess fits the code.
+        Check if the given guess fits the code.
+
         :param guess: the guess to be checked
         :param code: the actual code
         :return black_dot: number of digits on the correct position
@@ -121,22 +124,22 @@ class BasePlayer:
         return black_dot, white_dot
 
     def get_code_length(self):
-        """Returns the code length."""
+        """Return the code length."""
 
         return self.__code_length
 
     def get_number_of_pins(self):
-        """Returns the number of possible digits."""
+        """Return the number of possible digits."""
 
         return self.__number_of_pins
 
     def get_max_guesses(self):
-        """Returns the maximum number of guesses."""
+        """Return the maximum number of guesses."""
 
         return self.__max_guesses
 
     def get_count_guesses(self):
-        """Returns the number of the current guess."""
+        """Return the number of the current guess."""
 
         return self.__count_guesses
 
@@ -148,7 +151,7 @@ class BasePlayer:
 
 class HumanPlayer(BasePlayer):
     """
-    Class that allows you to play.
+    Class that contains human game logic.
 
     Attributes:
     code : list
@@ -156,31 +159,31 @@ class HumanPlayer(BasePlayer):
 
     Methods:
     set_random_code()
-        Sets randomly generated code.
+        Set randomly generated code.
     get_code()
-        Returns the actual code.
+        Return the actual code.
     """
 
     def __init__(self):
-        """Constructs all the necessary attributes for the HumanPlayer object."""
+        """Construct all the necessary attributes for the HumanPlayer object."""
 
         super().__init__()
         self.__code = None
 
     def set_random_code(self):
-        """Sets Randomly generated code."""
+        """Set Randomly generated code."""
 
         self.__code = [random.randint(1, self.get_number_of_pins())
                        for _ in range(self.get_code_length())]
 
     def get_code(self):
-        """Returns the actual code"""
+        """Return the actual code"""
         return self.__code
 
 
 class ComputerPlayer(BasePlayer):
     """
-    Class that allows computer to play by using Five guess algorithm.
+    Class that contains computer game logic based on the Five guess algorithm.
 
     Attributes:
     initial_guess : list
@@ -198,34 +201,34 @@ class ComputerPlayer(BasePlayer):
 
     Methods:
     set_random_code()
-        Sets randomly generated code.
+        Set randomly generated code.
     remove_unlike_response()
-        Removes from possible_codes any code that would not give the same response
+        Remove from possible_codes any code that would not give the same response
         if it (the guess) were the code.
     remove_guess()
-        Removes from possible_codes and unseen_codes the current guess if it's not the solution.
+        Remove from possible_codes and unseen_codes the current guess if it's not the solution.
     minimax()
         Minimax technique to find the next guess.
     set_code(code)
-        Sets the actual code.
+        Set the actual code.
     get_code()
-        Returns the actual code.
+        Return the actual code.
     set_current_guess(guess)
-        Sets the current guess.
+        Set the current guess.
     get_current_guess()
-        Returns the current guess.
+        Return the current guess.
     get_possible_codes()
-        Returns the set of the possible guesses.
+        Return the set of the possible guesses.
     set_response(response)
-        Sets the guess response.
+        Set the guess response.
     get_last_guess()
-        Returns the last element of possible guesses.
+        Return the last element of possible guesses.
     """
 
     __initial_guess = [1, 1, 2, 2]
 
     def __init__(self):
-        """Constructs all the necessary attributes for the HumanPlayer object."""
+        """Construct all the necessary attributes for the HumanPlayer object."""
 
         super().__init__()
         self.__code = None
@@ -237,14 +240,14 @@ class ComputerPlayer(BasePlayer):
         self.__current_guess = self.__initial_guess
 
     def set_random_code(self):
-        """Sets randomly generated code."""
+        """Set randomly generated code."""
 
         self.__code = [random.randint(1, self.get_number_of_pins())
                        for _ in range(self.get_code_length())]
 
     def remove_unlike_response(self):
         """
-        Removes from possible_codes any code that would not give the same response
+        Remove from possible_codes any code that would not give the same response
         if it (the guess) were the code.
         """
 
@@ -254,7 +257,7 @@ class ComputerPlayer(BasePlayer):
 
     def remove_guess(self):
         """
-        Removes from possible_codes and unseen_codes the current guess if it's not the solution.
+        Remove from possible_codes and unseen_codes the current guess if it's not the solution.
         """
 
         self.__unseen_codes.difference_update(self.__current_guess)
@@ -278,36 +281,36 @@ class ComputerPlayer(BasePlayer):
                 self.__current_guess = list(unseen)
 
     def set_code(self, code):
-        """Sets the actual code."""
+        """Set the actual code."""
 
         self.__code = code
 
     def get_code(self):
-        """Returns the actual code."""
+        """Return the actual code."""
 
         return self.__code
 
     def set_current_guess(self, guess):
-        """Sets the current guess."""
+        """Set the current guess."""
 
         self.__current_guess = guess
 
     def get_current_guess(self):
-        """Returns the current guess."""
+        """Return the current guess."""
 
         return self.__current_guess
 
     def get_possible_codes(self):
-        """Returns the set of the possible guesses."""
+        """Return the set of the possible guesses."""
 
         return self.__possible_codes
 
     def set_response(self, response):
-        """Sets the guess response."""
+        """Set the guess response."""
 
         self.__response = response
 
     def get_last_guess(self):
-        """Returns the last element of possible guesses."""
+        """Return the last element of possible guesses."""
 
         return list(self.__possible_codes.pop())
