@@ -162,6 +162,8 @@ class HumanPlayer(BasePlayer):
         Set randomly generated code.
     get_code()
         Return the actual code.
+    set_code()
+        Set code.
     """
 
     def __init__(self):
@@ -179,6 +181,11 @@ class HumanPlayer(BasePlayer):
     def get_code(self):
         """Return the actual code"""
         return self.__code
+
+    def set_code(self, code):
+        """Set_code."""
+
+        self.__code = code
 
 
 class ComputerPlayer(BasePlayer):
@@ -209,6 +216,8 @@ class ComputerPlayer(BasePlayer):
         Remove from possible_codes and unseen_codes the current guess if it's not the solution.
     minimax()
         Minimax technique to find the next guess.
+    play_mastermind()
+        Game loop for tests only.
     set_code(code)
         Set the actual code.
     get_code()
@@ -279,6 +288,27 @@ class ComputerPlayer(BasePlayer):
             if maxim < minim:
                 minim = maxim
                 self.__current_guess = list(unseen)
+
+    def play_mastermind(self):
+        """
+        Game loop for tests only.
+
+        :return : True if you win, False if you lose
+        """
+
+        self.set_random_code()
+        while self.get_count_guesses() < self.get_max_guesses():
+            self.increment_count_guesses()
+            self.remove_guess()
+            self.__response = self.check(self.__current_guess, self.__code)
+            if self.__response[0] == self.get_code_length():
+                return True
+            self.remove_unlike_response()
+            if len(self.__possible_codes) == 1:
+                self.__current_guess = list(self.__possible_codes.pop())
+            else:
+                self.minimax()
+        return False
 
     def set_code(self, code):
         """Set the actual code."""

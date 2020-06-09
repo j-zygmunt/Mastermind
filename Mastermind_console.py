@@ -157,12 +157,12 @@ class BasePlayer:
 
         if isinstance(self, HumanPlayer):
             if result:
-                print("Gratulacje!\nwygrałeś za {} razem!".format(self.__count_guesses + 1))
+                print("Gratulacje!\nwygrałeś za {} razem!".format(self.__count_guesses))
             else:
                 print("Nie tym razem, pzdr poćwicz.")
         else:
             if result:
-                print("Komputer wygrał za {} razem".format(self.__count_guesses + 1))
+                print("Komputer wygrał za {} razem".format(self.__count_guesses))
             else:
                 print("Nie tym razem, pzdr poćwicz.")
 
@@ -210,8 +210,12 @@ class HumanPlayer(BasePlayer):
         Get the user guess.
     get_answer()
         Print the answer.
+    get_code()
+        Return the actual code.
     play_mastermind()
         Game loop.
+    set_code()
+        Set code.
     """
 
     def __init__(self):
@@ -240,6 +244,11 @@ class HumanPlayer(BasePlayer):
 
         print("black {} white {}".format(black_dot, white_dot))
 
+    def get_code(self):
+        """Return the actual code"""
+
+        return self.__code
+
     def play_mastermind(self):
         """
         Game loop.
@@ -256,6 +265,11 @@ class HumanPlayer(BasePlayer):
                 return self.game_over(True)
             self.get_answer(black_dot, white_dot)
         return self.game_over(False)
+
+    def set_code(self, code):
+        """Set_code."""
+
+        self.__code = code
 
 
 class ComputerPlayer(BasePlayer):
@@ -277,7 +291,7 @@ class ComputerPlayer(BasePlayer):
             actual guess
 
         Methods:
-        get_code()
+        set_code()
             Set code entered by user.
         remove_unlike_response()
             Remove from possible_codes any code that would not give the same response
@@ -304,7 +318,7 @@ class ComputerPlayer(BasePlayer):
         self.__response = None
         self.__current_guess = self.__initial_guess
 
-    def get_code(self):
+    def set_user_code(self):
         """Set code entered by user."""
 
         while True:
@@ -361,7 +375,7 @@ class ComputerPlayer(BasePlayer):
         """
 
         if mode:
-            self.get_code()
+            self.set_user_code()
         else:
             self.__code = self.get_random_code()
             print("wyosowany kod", self.__code)

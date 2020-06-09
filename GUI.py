@@ -52,15 +52,39 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         popup window that appears when the game ends
     var
         variable that stores user entry
-    and a lot of graphics
+    and a lot of graphics...
 
     Methods:
-    clear_current_window:
-        clear window
-    start:
-        create start window
-
-
+    clear_current_window()
+        Destroy all of the objects of the current window.
+    start()
+        Create start window.
+    choose_player()
+        Here you can choose the game mode.
+    play_as_human()
+        Here you can try to break the code by yourself.
+    get_guess()
+        Check if your guess is valid.
+    choose_computer_player_mode()
+        Here you can choose if the code will be generated randomly or entered by you.
+    play_as_computer_m1()
+        Here computer tries to break the random code.
+    play_as_computer_m2()
+        Here computer tries to break your code.
+    get_computer_guess(mode)
+        Get the next computer guess using the five guess algorithm.
+    get_code()
+        Check if the entered code is valid.
+    add_guess(iteration, mode)
+        Display the current guess and answers.
+    restart(mode)
+        Restart the current game.
+    quit()
+        Terminate application.
+    menu(mode)
+        Go to the choose player window.
+    back(where)
+        Back to the previous window.
     """
 
     def __init__(self, main):
