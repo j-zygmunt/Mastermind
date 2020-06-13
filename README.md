@@ -22,8 +22,3 @@
 - Próba wpisania niepoprawnego kodu do pola odpowiedzi (mniej lub więcej niż 4 znaki, znaki nie będące cyframi od 1 do 6) -oczekiwane nieuznanie kodu (gracz nie traci tury).
 - Wpisanie 10 kodów, resetowanie gry, wpisanie 5 kodów -oczekiwane normalne działanie gry (czy licznik tur resetuje się po wciśnięciu “Reset”).
 - Sprawdzenie sprawności algorytmu łamiącego kod
-
-zamina projektu mastermind z bazowego na opisany wyżej spowodonana jest zaleceniami Pana Ciury 
-
-Link do github
-https://github.com/j-zygmunt/JS-Project-Mastermind
