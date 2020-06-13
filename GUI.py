@@ -11,9 +11,11 @@ MastermindInterface
 
 import tkinter
 import mastermind
+import assets
 
 
-class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors, disable=too-many-instance-attributes
+class MastermindInterface(tkinter.Frame):
+    # pylint: disable=too-many-ancestors, disable=too-many-instance-attributes
     """
     This class allows you to play in 3 ways:
 
@@ -50,9 +52,8 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         popup window that appears when error occurs
     endgame_popup
         popup window that appears when the game ends
-    var
+    entry_var
         variable that stores user entry
-    and a lot of graphics...
 
     Methods:
     clear_current_window()
@@ -88,50 +89,12 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
     """
 
     def __init__(self, main):
-        tkinter.Frame.__init__(self, main)
+        super().__init__(main)
+
         self.__main_window = main
         self.__main_window.geometry("412x520")
         self.__main_window.resizable(0, 0)
         self.__main_window.title("Mastermind")
-
-        self.__window_background = \
-            tkinter.PhotoImage(file='graphics/bg/background.png')
-        self.__play_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/play.png')
-        self.__computer_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/computer.png')
-        self.__human_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/human.png')
-        self.__check_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/check.png')
-        self.__restart_button_end_img = \
-            tkinter.PhotoImage(file='graphics/buttons/restart.png')
-        self.__restart_button_window_img = \
-            tkinter.PhotoImage(file='graphics/buttons/restart2.png')
-        self.__close_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/close.png')
-        self.__menu_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/menu.png')
-        self.__back_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/back.png')
-        self.__random_code_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/random.png')
-        self.__your_code_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/your.png')
-        self.__enter_button_img = \
-            tkinter.PhotoImage(file='graphics/buttons/enter.png')
-        self.__next_button_img = \
-            tkinter.PhotoImage(file="graphics/buttons/next.png")
-        self.__your_guesses_img = \
-            tkinter.PhotoImage(file='graphics/labels/your_guesses.png')
-        self.__computer_guesses_img = \
-            tkinter.PhotoImage(file='graphics/labels/computer_guesses.png')
-        self.__answers_img = \
-            tkinter.PhotoImage(file='graphics/labels/answers.png')
-        self.__guess_here_img = \
-            tkinter.PhotoImage(file='graphics/labels/guess.png')
-        self.__code_here_img = \
-            tkinter.PhotoImage(file='graphics/labels/code.png')
 
         self.__current_game = None
         self.__entry = None
@@ -144,7 +107,8 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         self.__back_button = None
         self.__error_popup = None
         self.__endgame_popup = None
-        self.__var = tkinter.StringVar()
+        self.__entry_var = tkinter.StringVar()
+
         self.start()
 
     def clear_current_window(self):
@@ -163,11 +127,11 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
         play_button = tkinter.Button(self.__main_window,
                                      command=self.choose_player,
-                                     image=self.__play_button_img)
+                                     image=assets.Assets.PLAY_BUTTON)
         play_button.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
     def choose_player(self):
@@ -181,20 +145,20 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
 
         computer_button = tkinter.Button(self.__main_window,
-                                         image=self.__computer_button_img,
+                                         image=assets.Assets.COMPUTER_BUTTON,
                                          command=self.choose_computer_player_mode)
         computer_button.place(relx=0.5, rely=0.6, anchor=tkinter.CENTER)
         human_button = tkinter.Button(self.__main_window,
                                       command=self.play_as_human,
-                                      image=self.__human_button_img)
+                                      image=assets.Assets.HUMAN_BUTTON)
         human_button.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
         self.__back_button = tkinter.Button(self.__main_window,
                                             command=self.start,
-                                            image=self.__back_button_img)
+                                            image=assets.Assets.BACK_BUTTON)
         self.__back_button.place(relx=0.98, rely=0.02, anchor=tkinter.NE)
 
     def play_as_human(self):
@@ -210,7 +174,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
 
         self.__current_game = mastermind.HumanPlayer()
@@ -220,29 +184,29 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
                                                   text=str(remaining), bg='grey')
         self.__remaining_attempts.config(width=2, borderwidth=2, relief="ridge")
         self.__remaining_attempts.place(relx=0.05, rely=0.05)
-        guesses_label = tkinter.Label(self.__main_window, image=self.__your_guesses_img)
+        guesses_label = tkinter.Label(self.__main_window, image=assets.Assets.YOUR_GUESS)
         guesses_label.place(relx=0.3, rely=0.15, anchor=tkinter.CENTER)
-        answers_label = tkinter.Label(self.__main_window, image=self.__answers_img)
+        answers_label = tkinter.Label(self.__main_window, image=assets.Assets.ANSWERS)
         answers_label.place(relx=0.7, rely=0.15, anchor=tkinter.CENTER)
         guess_frame = tkinter.Frame(self.__main_window, height=10, width=15, bg='#707271')
-        self.__entry = tkinter.Entry(guess_frame, textvariable=self.__var)
+        self.__entry = tkinter.Entry(guess_frame, textvariable=self.__entry_var)
         self.__entry.config(width=7, font="Calibri 13 bold", justify='center')
         self.__entry.grid(row=0, column=1)
-        here_label = tkinter.Label(guess_frame, image=self.__guess_here_img, bg='#707271')
+        here_label = tkinter.Label(guess_frame, image=assets.Assets.GUESS, bg='#707271')
         here_label.grid(row=0, column=0)
         guess_frame.place(relx=0.5, rely=0.98, anchor=tkinter.S)
         self.__check_button = tkinter.Button(self.__main_window,
                                              command=self.get_guess,
-                                             image=self.__check_button_img)
+                                             image=assets.Assets.CHECK_BUTTON)
         self.__check_button.place(relx=0.85, rely=0.98, anchor=tkinter.S)
         self.__main_window.bind('<Return>', lambda event=None: self.get_guess())
         restart_button_window = tkinter.Button(self.__main_window,
                                                command=lambda: self.restart(0),
-                                               image=self.__restart_button_window_img)
+                                               image=assets.Assets.RESTART_BUTTON_WINDOW)
         restart_button_window.place(relx=0.15, rely=0.98, anchor=tkinter.S)
         self.__back_button = tkinter.Button(self.__main_window,
                                             command=lambda: self.back(0),
-                                            image=self.__back_button_img)
+                                            image=assets.Assets.BACK_BUTTON)
         self.__back_button.place(relx=0.98, rely=0.02, anchor=tkinter.NE)
 
     def get_guess(self):
@@ -261,7 +225,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         """
 
         try:
-            self.__guess = self.__current_game.appropriate_code(self.__var.get())
+            self.__guess = self.__current_game.appropriate_code(self.__entry_var.get())
 
         except mastermind.InappropriateCodeException as error:
             self.__error_popup = tkinter.Toplevel()
@@ -274,7 +238,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
             label.pack(pady=10)
             close_button = tkinter.Button(self.__error_popup,
                                           command=self.__error_popup.destroy,
-                                          image=self.__close_button_img)
+                                          image=assets.Assets.CLOSE_BUTTON)
             close_button.place(x=72.5, y=45)
             self.__error_popup.mainloop()
             return
@@ -315,15 +279,15 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
             close_button = tkinter.Button(self.__endgame_popup,
                                           command=self.quit,
-                                          image=self.__close_button_img)
+                                          image=assets.Assets.CLOSE_BUTTON)
             close_button.place(x=8.75, y=45)
             menu_button = tkinter.Button(self.__endgame_popup,
                                          command=lambda: self.menu(0),
-                                         image=self.__menu_button_img)
+                                         image=assets.Assets.MENU_BUTTON)
             menu_button.place(x=72.5, y=45)
             restart_button_end = tkinter.Button(self.__endgame_popup,
                                                 command=lambda: self.restart(0),
-                                                image=self.__restart_button_end_img)
+                                                image=assets.Assets.RESTART_BUTTON_END)
             restart_button_end.place(x=136.25, y=45)
             self.__endgame_popup.mainloop()
 
@@ -338,21 +302,21 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
 
         self.__current_game = mastermind.ComputerPlayer()
         random_code_button = tkinter.Button(self.__main_window,
-                                            image=self.__random_code_button_img,
+                                            image=assets.Assets.RANDOM_CODE_BUTTON,
                                             command=self.play_as_computer_m1)
         random_code_button.place(relx=0.5, rely=0.6, anchor=tkinter.CENTER)
         your_code_button = tkinter.Button(self.__main_window,
-                                          image=self.__your_code_button_img,
+                                          image=assets.Assets.YOUR_CODE_BUTTON,
                                           command=self.play_as_computer_m2)
         your_code_button.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
         self.__back_button = tkinter.Button(self.__main_window,
                                             command=self.choose_player,
-                                            image=self.__back_button_img)
+                                            image=assets.Assets.BACK_BUTTON)
         self.__back_button.place(relx=0.98, rely=0.02, anchor=tkinter.NE)
 
     def play_as_computer_m1(self):
@@ -368,7 +332,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
 
         self.__current_game = mastermind.ComputerPlayer()
@@ -377,13 +341,13 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
                                                   text=str(remaining), bg='grey')
         self.__remaining_attempts.config(width=2, borderwidth=2, relief="ridge")
         self.__remaining_attempts.place(relx=0.05, rely=0.05)
-        code_label = tkinter.Label(self.__main_window, image=self.__computer_guesses_img)
+        code_label = tkinter.Label(self.__main_window, image=assets.Assets.COMPUTER_GUESS)
         code_label.place(relx=0.3, rely=0.15, anchor=tkinter.CENTER)
-        answers_label = tkinter.Label(self.__main_window, image=self.__answers_img)
+        answers_label = tkinter.Label(self.__main_window, image=assets.Assets.ANSWERS)
         answers_label.place(relx=0.7, rely=0.15, anchor=tkinter.CENTER)
         self.__current_game.set_random_code()
         code_frame = tkinter.Frame(self.__main_window, height=10, width=15, bg='#707271')
-        here_label = tkinter.Label(code_frame, image=self.__code_here_img, bg='#707271')
+        here_label = tkinter.Label(code_frame, image=assets.Assets.CODE, bg='#707271')
         here_label.grid(row=0, column=0)
         self.__code = (''.join('%s' % char for char in self.__current_game.get_code()))
         current_code = tkinter.Label(code_frame, text=self.__code, bg='#707271',
@@ -391,16 +355,16 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         current_code.grid(row=0, column=1)
         code_frame.place(relx=0.5, rely=0.98, anchor=tkinter.S)
         self.__check_button = tkinter.Button(self.__main_window,
-                                             image=self.__next_button_img,
+                                             image=assets.Assets.NEXT_BUTTON,
                                              command=lambda: self.get_computer_guess(1))
         self.__check_button.place(relx=0.85, rely=0.98, anchor=tkinter.S)
         self.__main_window.bind('<Return>', lambda event=None: self.get_computer_guess(1))
         restart_button_window = tkinter.Button(self.__main_window,
                                                command=lambda: self.restart(1),
-                                               image=self.__restart_button_window_img)
+                                               image=assets.Assets.RESTART_BUTTON_WINDOW)
         restart_button_window.place(relx=0.15, rely=0.98, anchor=tkinter.S)
         self.__back_button = tkinter.Button(self.__main_window,
-                                            image=self.__back_button_img,
+                                            image=assets.Assets.BACK_BUTTON,
                                             command=self.choose_computer_player_mode)
         self.__back_button.place(relx=0.98, rely=0.02, anchor=tkinter.NE)
 
@@ -417,7 +381,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
         self.clear_current_window()
         window_background_label = tkinter.Label(self.__main_window)
-        window_background_label.config(image=self.__window_background)
+        window_background_label.config(image=assets.Assets.WINDOW_BACKGROUND)
         window_background_label.place(relwidth=1, relheight=1)
 
         self.__current_game = mastermind.ComputerPlayer()
@@ -426,29 +390,29 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
                                                   font='Calibri 13 bold', text=str(remaining))
         self.__remaining_attempts.config(width=2, borderwidth=2, relief="ridge")
         self.__remaining_attempts.place(relx=0.05, rely=0.05)
-        code_label = tkinter.Label(self.__main_window, image=self.__computer_guesses_img)
+        code_label = tkinter.Label(self.__main_window, image=assets.Assets.COMPUTER_GUESS)
         code_label.place(relx=0.3, rely=0.15, anchor=tkinter.CENTER)
-        answers_label = tkinter.Label(self.__main_window, image=self.__answers_img)
+        answers_label = tkinter.Label(self.__main_window, image=assets.Assets.ANSWERS)
         answers_label.place(relx=0.7, rely=0.15, anchor=tkinter.CENTER)
         code_frame = tkinter.Frame(self.__main_window, height=10, width=15, bg='#707271')
         self.__enter_button = tkinter.Button(code_frame, command=self.get_code,
-                                             image=self.__enter_button_img)
+                                             image=assets.Assets.ENTER_BUTTON)
         self.__enter_button.grid(row=0, column=0)
-        self.__entry = tkinter.Entry(code_frame, textvariable=self.__var, width=7,
+        self.__entry = tkinter.Entry(code_frame, textvariable=self.__entry_var, width=7,
                                      font="Calibri 13 bold", justify='center')
         self.__entry.grid(row=0, column=1)
         code_frame.place(relx=0.5, rely=0.98, anchor=tkinter.S)
         self.__check_button = tkinter.Button(self.__main_window,
-                                             image=self.__next_button_img,
+                                             image=assets.Assets.NEXT_BUTTON,
                                              command=lambda: self.get_computer_guess(2))
         self.__check_button.place(relx=0.85, rely=0.98, anchor=tkinter.S)
         self.__check_button.config(state='disable')
         restart_button_window = tkinter.Button(self.__main_window,
                                                command=lambda: self.restart(2),
-                                               image=self.__restart_button_window_img)
+                                               image=assets.Assets.RESTART_BUTTON_WINDOW)
         restart_button_window.place(relx=0.15, rely=0.98, anchor=tkinter.S)
         self.__back_button = tkinter.Button(self.__main_window,
-                                            image=self.__back_button_img,
+                                            image=assets.Assets.BACK_BUTTON,
                                             command=lambda: self.back(1))
         self.__back_button.place(relx=0.98, rely=0.02, anchor=tkinter.NE)
 
@@ -502,15 +466,15 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
                 label.pack(pady=10)
             close_button = tkinter.Button(self.__endgame_popup,
                                           command=self.quit,
-                                          image=self.__close_button_img)
+                                          image=assets.Assets.CLOSE_BUTTON)
             close_button.place(x=8.75, y=45)
             menu_button = tkinter.Button(self.__endgame_popup,
                                          command=lambda: self.menu(mode),
-                                         image=self.__menu_button_img)
+                                         image=assets.Assets.MENU_BUTTON)
             menu_button.place(x=72.5, y=45)
             restart_button_end = tkinter.Button(self.__endgame_popup,
                                                 command=lambda: self.restart(mode),
-                                                image=self.__restart_button_end_img)
+                                                image=assets.Assets.RESTART_BUTTON_END)
             restart_button_end.place(x=136.25, y=45)
             self.__endgame_popup.mainloop()
 
@@ -531,7 +495,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         """
 
         try:
-            self.__code = self.__current_game.appropriate_code(self.__var.get())
+            self.__code = self.__current_game.appropriate_code(self.__entry_var.get())
             self.__current_game.set_code(self.__code)
             self.__main_window.bind('<Return>', lambda event=None: self.get_computer_guess(2))
             self.__check_button.config(state='active')
@@ -549,7 +513,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
             close_button = tkinter.Button(self.__error_popup,
                                           command=self.__error_popup.destroy,
-                                          image=self.__close_button_img)
+                                          image=assets.Assets.CLOSE_BUTTON)
             close_button.place(x=72.5, y=45)
             self.__error_popup.mainloop()
             return
@@ -569,7 +533,7 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
         answer_frame = tkinter.Frame(self.__main_window, bg='grey')
 
         if mode == 0:
-            guess_label = tkinter.Label(guess_frame, text=self.__var.get())
+            guess_label = tkinter.Label(guess_frame, text=self.__entry_var.get())
             guess_label.config(font='Calibri 12 bold', background='grey')
             guess_label.grid(row=0, column=0, padx=10, pady=0)
 
@@ -656,6 +620,9 @@ class MastermindInterface(tkinter.Frame):   # pylint: disable=too-many-ancestors
 
 
 if __name__ == "__main__":
+
     root = tkinter.Tk()
+    assets.Assets.load()
     MastermindInterface(root)
+
     root.mainloop()
