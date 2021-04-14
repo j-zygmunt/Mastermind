@@ -1,5 +1,5 @@
 ﻿
-## **Mastermind(z możliwością łamania kodu przez komputer)**
+## **Mastermind(z możliwością łamania kodu przez algorytm)**
 
 **Opis zadania**
 
